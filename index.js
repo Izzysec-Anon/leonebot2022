@@ -31,6 +31,8 @@ for (const file of slashcommandFiles) {
   slashcommands.push(command.data.toJSON());
 }
 
+client.login(process.env.TOKEN)
+
 const rest = new REST({
    version: '9'
 }).setToken(t.token);
