@@ -1,0 +1,21 @@
+{
+  "clientId": "965373612280389632",
+
+
+  "parentOpened": "947507926841565245",
+  "parentTransactions": "947507926841565245",
+  "parentJeux": "947507926841565245",
+  "parentAutres": "947507926841565245",
+
+
+  "roleSupport": "945277769615564800",
+
+  
+  "logsTicket": "990701065202712616",
+  "ticketChannel": "947581618737008700",
+  
+  "footerText": "Sistema Del Ticket",
+  
+  "default_prefix": "./",
+    "owners": [""]
+}
