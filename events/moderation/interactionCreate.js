@@ -17,7 +17,8 @@ module.exports = {
         topic: interaction.user.id,
         permissionOverwrites: [{
             id: interaction.user.id,
-            allow: ['SEND_MESSAGES', 'VIEW_CHANNEL', 'READ_MESSAGE_HISTORY'],
+            allow: ['VIEW_CHANNEL', 'READ_MESSAGE_HISTORY'],
+            deny: ['SEND_MESSAGES'],
           },
           {
             id: client.config.roleSupport,
@@ -89,6 +90,8 @@ module.exports = {
         collector.on('collect', i => {
           if (i.user.id === interaction.user.id) {
             if (msg.deletable) {
+              let channels = interaction.guild.channels.cache.find(x=> x.name == `ticket-${interaction.user.username}`)
+              channels.permissionOverwrites.edit(interaction.member, { SEND_MESSAGES: true })
               msg.delete().then(async () => {
                 const embed = new MessageEmbed()
                   .setColor('ff9600')

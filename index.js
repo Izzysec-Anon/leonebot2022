@@ -1,70 +1,62 @@
-// prefix 
-const prefix = "./"
+global.Discord = require('discord.js')
+global.fs = require("fs");
+const { Client, Intents } = require('discord.js');
+const { MessageAttachment } = require("discord.js");
+global.client = new Discord.Client({
+    intents: 32767,
+    partials: ['USER', 'REACTION', 'MESSAGE']
+});
+try {
+    require("dotenv").config()
+} catch {}
+
+client.config = require("./config.json")
 
 
-
-// ———————————————[Module-exports Bot]———————————————
-const fs = require('fs');
-const {
-  Client,
-  Collection,
-  Intents
-} = require('discord.js');
-const config = require('./config.json');
-const {
-  REST
-} = require('@discordjs/rest');
-const {
-  Routes
-} = require('discord-api-types/v9');
-const {
-  clientId
-} = require('./config.json');
-
-const t = require('./token.json');
-
-const slashcommands = [];
-const slashcommandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'));
-
-for (const file of slashcommandFiles) {
-  const command = require(`./commands/${file}`);
-  slashcommands.push(command.data.toJSON());
-}
 
 client.login(process.env.TOKEN)
 
-const rest = new REST({
-   version: '9'
-}).setToken(t.token);
+client.commands = new Discord.Collection();
+global.commandsFolder = fs.readdirSync("./commands");
+for (const folder of commandsFolder) {
+    const commandsFiles = fs.readdirSync(`./commands/${folder}`);
+    for (const file of commandsFiles) {
+        if (file.endsWith(".js")) {
+            const command = require(`./commands/${folder}/${file}`);
+            client.commands.set(command.name, command);
+        } else {
+            const commandsFiles2 = fs.readdirSync(`./commands/${folder}/${file}`)
+            for (const file2 of commandsFiles2) {
+                const command = require(`./commands/${folder}/${file}/${file2}`);
+                client.commands.set(command.name, command);
+            }
+        }
+    }
+}
+//events
+const eventsFolders = fs.readdirSync('./events');
+for (const folder of eventsFolders) {
+    const eventsFiles = fs.readdirSync(`./events/${folder}`)
+    for (const file of eventsFiles) {
+        if (file.endsWith(".js")) {
+            const event = require(`./events/${folder}/${file}`);
+            client.on(event.name, (...args) => {
 
-rest.put(Routes.applicationCommands(clientId), {
-    body: slashcommands
-  })
-  .then(() => console.log('🤖 || Grazie per avermi risvegliato! || !Leone#7063.'))
-  .catch(console.error);
+                event.execute(...args)
 
-const client = new Client({
-  intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MEMBERS]
-});
+            });
+        } else {
+            const eventsFiles2 = fs.readdirSync(`./events/${folder}/${file}`)
+            for (const file2 of eventsFiles2) {
+                const event = require(`./events/${folder}/${file}/${file2}`);
+                client.on(event.name, (...args) => event.execute(...args));
+            }
+        }
+    }
+}
 
-const Discord = require('discord.js');
-client.discord = Discord;
-client.config = config;
 
-client.commands = new Collection();
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
-for (const file of commandFiles) {
-  const command = require(`./commands/${file}`);
-  client.commands.set(command.data.name, command);
-};
-
-const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
-
-for (const file of eventFiles) {
-  const event = require(`./events/${file}`);
-    client.on(event.name, (...args) => event.execute(...args, client));
-};
 
 client.on('interactionCreate', async interaction => {
   if (!interaction.isCommand()) return;
@@ -79,7 +71,7 @@ client.on('interactionCreate', async interaction => {
   
   
   try {
-    await command.execute(interaction, client, config);
+    await command.execute(interaction);
   } catch (error) {
     console.error(error);
     return interaction.reply({
@@ -89,13 +81,24 @@ client.on('interactionCreate', async interaction => {
   };
 });
 
-client.login(require('./token.json').token);
 
 
 
 // ———————————————[Login Bot = token.json]———————————————
 
 client.on("ready", () => {
+  try {
+    console.log(client.guilds.cache.size)
+    client.guilds.cache.forEach(guild => {
+        client.commands.forEach(command => {
+            guild.commands.create(command.data)
+        })
+    })
+
+
+} catch (err) {
+    console.error(err)
+}
   console.log("🟢 | BOT ONLINE! ");
   console.log("🔴 | NON TROVO IL DATABASE ");
   console.log("🟢 | NON TROVO IL COMANDO HELP ");
