@@ -23,7 +23,7 @@ module.exports = {
      * @param {CommandInteraction} interaction 
      */
     async execute(interaction) {
-        const {channel, options } = interaction;
+        const { channel, options } = interaction;
 
         const Amount = options.getNumber('amount');
         const Target = options.getMember('target');
