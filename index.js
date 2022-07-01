@@ -171,7 +171,7 @@ const ytch = require("yt-channel-info") //npm i yt-channel-info
 
 setInterval(() => {
     ytch.getChannelVideos("UC6eaw4UMokfH1mOdKPQgGNA", "newest").then(async response => {
-        var idVideo = response.items[0] ? .videoId
+        var idVideo = response.items[0]?.videoId
         if (!idVideo) return
 
         client.channels.cache.get("945277827719237703").messages.fetch()
