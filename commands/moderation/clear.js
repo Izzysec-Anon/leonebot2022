@@ -4,24 +4,25 @@ module.exports = {
     name: 'clear',
     description: 'Elimina i messaggi specificando la quantita.',
     permissions: 'MANAGE_MESSAGES',
-    option: [
-        {
-            name: 'amount',
-            description: 'Seleziona la quantita dei messaggi da eliminare.',
-            type: 'NUMBER',
-            required: true
-        },
-        {
-            name: 'target',
-            description: 'Seleziona il target dei messaggi da eliminare.',
-            type: 'USER',
-            required: false
-        }
-    ],
-    /**
-     * 
-     * @param {CommandInteraction} interaction 
-     */
+    data: {
+        name: "clear",
+        description: "comando invita",    
+        option: [
+            {
+                name: 'amount',
+                description: 'Seleziona la quantita dei messaggi da eliminare.',
+                type: 'NUMBER',
+                required: true
+            },
+            {
+                name: 'target',
+                description: 'Seleziona il target dei messaggi da eliminare.',
+                type: 'USER',
+                required: false
+            }
+        ],
+    },
+
     async execute(interaction) {
         const {  channel, options } = interaction;
 
@@ -44,12 +45,12 @@ module.exports = {
             })
 
             await channel.bulkDelete(filtred, true).then(messages => {
-                Response.setDescription('🧹 Eliminati ${messages.size} da ${Target}.');
+                Response.setDescription(`🧹 Eliminati ${messages.size} da ${Target}.`);
                 interaction.reply({embeds: [Response]});
             })
         } else {
             await channel.bulkDelete(Amount, true).then(messages => {
-                Response.setDescription('🧹 Eliminati ${messages.size} da questo canale');
+                Response.setDescription(`🧹 Eliminati ${messages.size} da questo canale`);
                 interaction.reply({embeds: [Response]});
             })
         }
