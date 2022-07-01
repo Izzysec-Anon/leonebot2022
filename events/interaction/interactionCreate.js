@@ -1,4 +1,4 @@
-let hastebin = require('hastebin');
+let fs = require('fs');
 const { MessageEmbed, MessageActionRow, MessageButton, MessageSelectMenu } = require('discord.js');
 module.exports = {
     name: 'interactionCreate',
@@ -270,35 +270,21 @@ module.exports = {
                     `${new Date(m.createdTimestamp).toLocaleString('de-DE')} - ${m.author.username}#${m.author.discriminator}: ${m.attachments.size > 0 ? m.attachments.first().proxyURL : m.content}`
                 ).reverse().join('\n');
                 if (a.length < 1) a = "Non era scritto nel ticket"
-                hastebin.createPaste(a, {
-                        contentType: 'text/plain',
-                        server: 'https://hastebin.com'
-                    }, {})
+                var atc = fs.readFileSync('./nosleep.txt', a)
                     .then(function(urlToPaste) {
-                        const embed = new MessageEmbed()
-                            .setAuthor('Logs Ticket', ' ')
-                            .setDescription(`📰 Ticket-Logs \`${chan.id}\` creato da <@!${chan.topic}> ed eliminato da <@!${interaction.user.id}>\n\nLogs: [**Clicca qui per vedere i logs**] (${urlToPaste})`)
-                            .setColor('2f3136')
-                            .setTimestamp();
-
-                        const embed2 = new MessageEmbed()
-                            .setAuthor('Ticket Logs', ' ')
-                            .setDescription(`📰 Logs del tuo ticket \`${chan.id}\`: [**Clicca qui per vedere i logs**](${urlToPaste})`)
-                            .setColor('2f3136')
-                            .setTimestamp();
-
-                        client.channels.cache.get(client.config.logsTicket).send({
-                            embeds: [embed]
-                        });
-                        client.users.cache.get(chan.topic).send({
-                            embeds: [embed2]
-                        }).catch(() => { console.log('Non posso inviarlo in DM') });
+                        client.channels.cache.get(client.config.logsTicket).send(
+                            `📰 Ticket-Logs \`${chan.id}\` creato da <@!${chan.topic}> ed eliminato da <@!${interaction.user.id}>\n\nLogs:`, { files: [atc]}
+                        );
+                        client.users.cache.get(chan.topic).send(
+                            `📰 Logs del tuo ticket \`${chan.id}\`: [**Clicca qui per vedere i logs**](${urlToPaste})`, { files: [atc]}
+                        ).catch(() => { console.log('Non posso inviarlo in DM') });
                         chan.send('Elimina canale.');
 
                         setTimeout(() => {
                             chan.delete();
                         }, 5000);
                     });
+
             });
         };
     },
