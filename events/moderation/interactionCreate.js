@@ -90,7 +90,8 @@ module.exports = {
                 collector.on('collect', i => {
                     if (i.user.id === interaction.user.id) {
                         if (msg.deletable) {
-                            let channels = interaction.guild.channels.cache.find(x => x.name == `ticket-${interaction.user.username}`)
+                            let channels = interaction.guild.channels.cache.find(x => x.name.includes(interaction.user.username))
+                            console.log(channels)
                             channels.permissionOverwrites.edit(interaction.member, { SEND_MESSAGES: true })
                             msg.delete().then(async() => {
                                 const embed = new MessageEmbed()
