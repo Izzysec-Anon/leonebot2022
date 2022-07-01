@@ -14,8 +14,5 @@
   "logsTicket": "990701065202712616",
   "ticketChannel": "947581618737008700",
   
-  "footerText": "Sistema Del Ticket",
-  
-  "default_prefix": "./",
-    "owners": [""]
+  "footerText": "Sistema Del Ticket"
 }
