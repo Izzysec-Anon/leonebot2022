@@ -1,7 +1,5 @@
 module.exports = {
     name: "avatar",
-    onlyStaff: false,
-    onlyOwner: false,
     data: {
         name: "avatar",
         description: "avatar di un utente",
