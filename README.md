@@ -37,12 +37,6 @@ npm i
 }
 ```
 
-```json
-//token.json
-{
-  "token": "token of your discord bot"
-}
-```
 
 ## How to start ?
 ```bash
