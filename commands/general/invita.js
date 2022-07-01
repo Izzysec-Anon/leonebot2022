@@ -1,13 +1,13 @@
 module.exports = {
     name: "invita",
     data: {
-        name: "avatar",
+        name: "invita",
         description: "comando invita",
     },
     execute(interaction) {
 
         const invita = new Discord.MessageEmbed()
-            .setTitle("COMANDO ESEGUITO ./INVITA")
+            .setTitle("COMANDO ESEGUITO /INVITA")
             .setColor("#ffff")
             .setAuthor("!Leone", "https://png.pngtree.com/png-vector/20191030/ourlarge/pngtree-lion-head-logo-png-image_1919936.jpg")
             .setDescription('Hai digitato il comando ./invita, troverai solo i link dei creatori del bot e del server per trovare altri server e siti sponsor digita il comando /sponsor')
