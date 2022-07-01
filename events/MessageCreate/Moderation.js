@@ -2,11 +2,9 @@ const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 module.exports = {
     name: 'messageCreate',
     async execute(message) {
-
-        client.on("messageCreate", message => {
-            if (message.channel.type == "DM") return
+            if (message.channel.type == "DM") {return}
         
-            if (message.member.roles.cache.has("945277769615564800") || message.member.roles.cache.has("947606973069803541")) return
+            if (message.member.roles.cache.has("949611788192841728") || message.member.roles.cache.has("945277758395809842")) return
         
             var parolacce = ["negro", "lesbians", "lesblica", "lesbo", "lesblico", "nigga", "frocio", "gay", "finocchio", "trans", "bisex"]
             var trovata = false;
@@ -18,7 +16,7 @@ module.exports = {
                     testo = testo.replace(eval(`/${parola}/g`), "###");
                 }
             })
-        
+
             if (trovata) {
                 message.delete();
                 var embed = new Discord.MessageEmbed()
@@ -27,7 +25,7 @@ module.exports = {
         
                 message.channel.send({ embeds: [embed] })
             }
-        });
+        
 
 
 
