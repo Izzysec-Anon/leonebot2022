@@ -57,33 +57,6 @@ for (const folder of eventsFolders) {
 
 
 
-
-client.on('interactionCreate', async interaction => {
-    if (!interaction.isCommand()) return;
-
-
-    const command = client.commands.get(interaction.commandName);
-    if (!command) return;
-
-
-
-
-
-
-    try {
-        await command.execute(interaction);
-    } catch (error) {
-        console.error(error);
-        return interaction.reply({
-            content: 'Si è verificato un errore durante una esecuzione di questo comando!',
-            ephemeral: true
-        });
-    };
-});
-
-
-
-
 // ———————————————[YouTube Bot]———————————————
 
 const ytch = require("yt-channel-info") //npm i yt-channel-info
