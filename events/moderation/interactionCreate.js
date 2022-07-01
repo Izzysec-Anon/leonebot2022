@@ -18,7 +18,7 @@ module.exports = {
         permissionOverwrites: [{
             id: interaction.user.id,
             allow: ['VIEW_CHANNEL', 'READ_MESSAGE_HISTORY'],
-            deny: ['SEND_MESSAGES'],
+            deny: ['SEND_MESSAGES']
           },
           {
             id: client.config.roleSupport,
@@ -26,7 +26,7 @@ module.exports = {
           },
           {
             id: interaction.guild.roles.everyone,
-            deny: ['VIEW_CHANNEL'],
+            deny: ['VIEW_CHANNEL']
           },
         ],
         type: 'text',
