@@ -1,4 +1,3 @@
-let fs = require('fs');
 const { MessageEmbed, MessageActionRow, MessageButton, MessageSelectMenu } = require('discord.js');
 module.exports = {
     name: 'interactionCreate',
@@ -91,8 +90,6 @@ module.exports = {
                     if (i.user.id === interaction.user.id) {
                         if (msg.deletable) {
                             let channels = interaction.guild.channels.cache.find(x => x.name.includes(interaction.user.username))
-                            console.log(channels)
-                            console.log(interaction.member)
                             channels.permissionOverwrites.edit(interaction.member, { SEND_MESSAGES: true })
                             msg.delete().then(async() => {
                                 const embed = new MessageEmbed()
@@ -270,20 +267,35 @@ module.exports = {
                     `${new Date(m.createdTimestamp).toLocaleString('de-DE')} - ${m.author.username}#${m.author.discriminator}: ${m.attachments.size > 0 ? m.attachments.first().proxyURL : m.content}`
                 ).reverse().join('\n');
                 if (a.length < 1) a = "Non era scritto nel ticket"
-                var atc = fs.readFileSync('./nosleep.txt', a)
-                    .then(function(urlToPaste) {
-                        client.channels.cache.get(client.config.logsTicket).send(
-                            `📰 Ticket-Logs \`${chan.id}\` creato da <@!${chan.topic}> ed eliminato da <@!${interaction.user.id}>\n\nLogs:`, { files: [atc]}
-                        );
-                        client.users.cache.get(chan.topic).send(
-                            `📰 Logs del tuo ticket \`${chan.id}\`: [**Clicca qui per vedere i logs**](${urlToPaste})`, { files: [atc]}
-                        ).catch(() => { console.log('Non posso inviarlo in DM') });
-                        chan.send('Elimina canale.');
 
-                        setTimeout(() => {
-                            chan.delete();
-                        }, 5000);
+                try {
+                    fs.lstatSync("./temp").isDirectory()
+                } catch {
+                    const path = require('path');
+
+
+                    fs.mkdir(path.join(`./`, "temp"), (err) => {
+                        if (err) {
+                            return console.log(err);
+                        }
+                        console.log('Directory created successfully!');
                     });
+                }
+
+                var file = `./temp/log${interaction.user.id}.txt`
+                fs.writeFileSync(file, a)
+
+                client.channels.cache.get(client.config.logsTicket).send({ content: `📰 Ticket-Logs \`${chan.id}\` creato da <@!${chan.topic}> ed eliminato da <@!${interaction.user.id}>\n\nLogs:`, files: [file] });
+                client.users.cache.get(chan.topic).send({ content: `📰 Logs del tuo ticket \`${chan.id}\``, files: [file] }).catch(() => { console.log('Non posso inviarlo in DM') });
+                chan.send('Elimina canale.');
+
+                setTimeout(() => {
+                    chan.delete();
+                }, 5000);
+                fs.unlink(file, function(err) {
+                    if (err) throw err;
+                    console.log('File deleted!');
+                });
 
             });
         };

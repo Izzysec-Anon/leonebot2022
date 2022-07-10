@@ -12,23 +12,10 @@ module.exports = {
         })
 
 
-    console.log("🟢 | BOT ONLINE! ");
-    console.log("🔴 | NON TROVO IL DATABASE ");
-    console.log("🟢 | NON TROVO IL COMANDO HELP ");
-    console.log("🔴 | NON TROVO IL SISTEMA DI KICK E BAN ");
-    console.log("🔴 | NON TROVO IL SISTEMA DI FILTRO LINGUAGGIO ");
-    console.log("🟢 | NON TROVO IL LINK DEL BOT ");
-    console.log("🟢 | NON TROVO IL SISTEMA TIKCET ");
-    console.log("🟢 | NON TROVO UN MODULE-EXPORTS ");
-    console.log("🟢 | NON TROVO UN COPYRIGHT DI UN CREATORE DEL BOT ");
-    console.log("🟢 | NON TROVO UN SERVER");
-    console.log("🔴 | NON TROVO IL SISTEMA CLEAR");
-    console.log("🟢 | TOKEN CONESSO || BOT ---> !LeoneBOT#7773");
-    console.log('🔐 | TOKEN DECRIPTATO || Conttata !Leone#7063 per visualizzare il Token')
-
-    // ———————————————[Opzioni Bot]———————————————
-    client.user.setActivity('./help ', { type: 'WATCHING' });
-    client.user.setStatus('online');
+        console.log("🟢 | BOT ONLINE! ", client.guilds.size);
+        // ———————————————[Opzioni Bot]———————————————
+        client.user.setActivity('./help ', { type: 'WATCHING' });
+        client.user.setStatus('online');
 
 
 
