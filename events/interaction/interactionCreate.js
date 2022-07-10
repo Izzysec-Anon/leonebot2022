@@ -287,15 +287,16 @@ module.exports = {
 
                 client.channels.cache.get(client.config.logsTicket).send({ content: `📰 Ticket-Logs \`${chan.id}\` creato da <@!${chan.topic}> ed eliminato da <@!${interaction.user.id}>\n\nLogs:`, files: [file] });
                 client.users.cache.get(chan.topic).send({ content: `📰 Logs del tuo ticket \`${chan.id}\``, files: [file] }).catch(() => { console.log('Non posso inviarlo in DM') });
-                chan.send('Elimina canale.');
-
+                chan.send('Elimina canale.').then(()=>{
+                    fs.unlink(file, function(err) {
+                        if (err) throw err;
+                        console.log('File deleted!');
+                    });
+                })
                 setTimeout(() => {
                     chan.delete();
                 }, 5000);
-                fs.unlink(file, function(err) {
-                    if (err) throw err;
-                    console.log('File deleted!');
-                });
+
 
             });
         };
